@@ -34,6 +34,8 @@ EXTENSION = IMG_FILE[LAST_DOT+1:]
 # opens image file
 BASE = Image.open(IMG_FILE).convert('RGBA')
 
+#TODO finish collecting variables to put in the multi_watermark function
+#TODO make function to get file and path info and testing path correctness
 
 def multi_watermark(amount, base_image, txt='SaveMyServer'):
     '''
