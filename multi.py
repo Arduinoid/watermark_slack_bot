@@ -8,34 +8,46 @@ This makes each image optically unique as well as produce a different has value
 import os
 import sys
 from PIL import Image, ImageDraw, ImageFont
-# finding a file in the current directory that is a jpeg
-FILES = os.listdir('.')
-for index, item in enumerate(FILES):
-    if ".jpg" in item:
-        img_location = index
 
 AMOUNT = int(input("How many copies would you like?\nEnter number: "))
-# Setting up progress bar
-TOOLBAR_WIDTH = 50
-sys.stdout.write("Copy Progress: [%s]" % (" " * TOOLBAR_WIDTH))
-sys.stdout.flush()
-sys.stdout.write("\b" * (TOOLBAR_WIDTH+1))
-# setting up all variables
-
-# AMOUNT = 500
-
+# Directory where images should be placed
+LOCATION = '//nas-r510/D$/Pictures/watermark'
 # selecting the file that is a jpeg amoung other FILES
-IMG_FILE = FILES[img_location]
+IMG_FILES = FILES[img_location]
 # Getting the last occurrence of the period to get file EXTENSION
-LAST_DOT = IMG_FILE.rfind('.')
+LAST_DOT = IMG_FILES.rfind('.')
 # Splitting the file into file name and EXTENSION name
-NAME = IMG_FILE[:LAST_DOT]
-EXTENSION = IMG_FILE[LAST_DOT+1:]
+NAME = IMG_FILES[:LAST_DOT]
+EXTENSION = IMG_FILES[LAST_DOT+1:]
 # opens image file
-BASE = Image.open(IMG_FILE).convert('RGBA')
+BASE_IMG = Image.open(IMG_FILES).convert('RGBA')
 
-#TODO finish collecting variables to put in the multi_watermark function
-#TODO make function to get file and path info and testing path correctness
+#TODO: finish collecting variables to put in the multi_watermark function
+#TODO: make function to get file and path info and testing path correctness
+
+def get_image_files(location):
+    '''
+    Given a file path the function returns the image files in that directory
+
+    TODO:
+    - Test given file path
+    - get all image files in the given directory
+    - return image files
+    '''
+    file_extensions = ['.jpg','.png']
+    path_exists = os.path.exists(location)
+
+    if path_exists:
+        # finding a file in the current directory that is a jpeg
+        files = os.listdir(location)
+        for f in files:
+            for e in file_extensions:
+                
+        for index, item in enumerate(files):
+            if ".jpg" in item:
+                img_location = index
+
+    return None
 
 def multi_watermark(amount, base_image, txt='SaveMyServer'):
     '''
@@ -60,4 +72,5 @@ def multi_watermark(amount, base_image, txt='SaveMyServer'):
         out.save(NAME + "-watermarked-" + str(i + 1)+ "." + EXTENSION)
 
 if __name__ == '__main__':
-    multi_watermark(AMOUNT, BASE)
+    IMG_FILES = get_image_files(LOCATION)
+    multi_watermark(AMOUNT, BASE_IMG)
