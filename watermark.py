@@ -64,7 +64,7 @@ def multi_watermark(img_file, amount, txt='SaveMyServer'):
     delimiter = img_file[0].rfind('.')
     file_name = img_file[0][:delimiter]
     file_extension = img_file[0][delimiter+1:]
-    out_directory = img_file[1] + 'watermarked_' + file_name
+    out_directory = img_file[1] + 'watermarked_' + img_file[0].split('.')[0]
     # get a font
     fnt = ImageFont.truetype('arial.ttf', 60)
     # sets OPACITY of the water mark
