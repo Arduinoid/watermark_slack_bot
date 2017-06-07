@@ -12,7 +12,7 @@ SLACK_TOKEN = os.getenv('SLACK_BOT_TOKEN')
 BOT_ID = str(os.getenv('BOT_ID'))
 
 AT_BOT = "<@" + BOT_ID + ">"
-EXAMPLE_COMMAND = "do"
+COMMANDS = {'make': 0}
 
 slack_client = SlackClient(SLACK_TOKEN)
 
@@ -23,12 +23,24 @@ def handle_command(command, channel):
         are valid commands. If so, then acts on the commands. If not,
         returns back what it needs for clarification.
     """
-    response = "Not sure what you mean. Use the *" + EXAMPLE_COMMAND + \
-               "* command with numbers, delimited by spaces."
-    if command.startswith(EXAMPLE_COMMAND):
-        response = "Sure...write some more code then I can do that!"
-    slack_client.api_call("chat.postMessage", channel=channel,
-                          text=response, as_user=True)
+    response = "Hey there! Use the *" + COMMANDS.keys()[0] + \
+               "* command along with a number, delimited by a space. I can then go ahead and get some stuff done for ya :wink:\nExample: `@waterboy make 500` will make 500 watermarked images"
+    if command.startswith('make'):
+        amount = command.split('make ')[1].strip()
+        if int(amount) <= 700:
+            image_files = get_image_files(LOCATION)
+            img_file = pick_image_from(image_files)
+            response = "Alright, I'm on it. Making " + amount + " copies of " + img_file[0] + " image file..."
+            slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
+            multi_watermark(img_file,int(amount))
+            response = "OK, you're all set @channel"
+            slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
+        else:
+            response = "I can understand you want a lot of images, but lets try to keep it to less than 700, OK :grimacing:"
+            slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
+    else:
+        slack_client.api_call("chat.postMessage", channel=channel,
+                              text=response, as_user=True)
 
 
 def parse_slack_output(slack_rtm_output):
