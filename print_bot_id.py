@@ -3,7 +3,7 @@ import os
 from slackclient import SlackClient
 
 
-BOT_NAME = 'multi_watermark'
+BOT_NAME = 'waterboy'
 
 slack_client = SlackClient(os.getenv('SLACK_BOT_TOKEN'))
 

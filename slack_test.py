@@ -6,6 +6,7 @@ from __future__ import print_function
 import os
 import time
 from slackclient import SlackClient
+from watermark import *
 
 SLACK_TOKEN = os.getenv('SLACK_BOT_TOKEN')
 BOT_ID = str(os.getenv('BOT_ID'))
