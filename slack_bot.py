@@ -4,6 +4,7 @@ contained to producing multiple watermarked images.
 '''
 from __future__ import print_function
 import os
+import re
 import time
 from slackclient import SlackClient
 from watermark import *
@@ -23,17 +24,26 @@ def handle_command(command, channel):
         are valid commands. If so, then acts on the commands. If not,
         returns back what it needs for clarification.
     """
-    response = "Hey there! Use the *" + COMMANDS.keys()[0] + \
-               "* command along with a number, delimited by a space. I can then go ahead and get some stuff done for ya :wink:\nExample: `@waterboy make 500` will make 500 watermarked images"
+    response = "Hey there! Use the *" \
+               + COMMANDS.keys()[0] + \
+               """* command along with a number, delimited by a space.
+                I can then go ahead and get some stuff done for ya :wink:\n
+               Example: `@waterboy make 500` will make 500 watermarked images"""
     if command.startswith('make'):
-        amount = command.split('make ')[1].strip()
+        ex = r'\d+'
+        match = re.search(ex,command)
+        amount = match.group(0)
         if int(amount) <= 700:
-            image_files = get_image_files(LOCATION)
-            img_file = pick_image_from(image_files)
+            img_file = pick_image_from(get_image_files(LOCATION))
+            out_directory = img_file[1] + 'watermarked_' + img_file[0].split('.')[0]
             response = "Alright, I'm on it. Making " + amount + " copies of " + img_file[0] + " image file..."
-            slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
-            multi_watermark(img_file,int(amount))
-            response = "OK, you're all set @channel"
+            try:
+                os.mkdir(out_directory)
+                slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
+                multi_watermark(img_file,int(amount))
+                response = "OK, you're all set @channel"
+            except:
+                response = "Oops, looks like there's already a folder here with these pictures\nTry removing the old folder first and run the command again. :ghost:"
             slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
         else:
             response = "I can understand you want a lot of images, but lets try to keep it to less than 700, OK :grimacing:"
