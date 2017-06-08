@@ -31,16 +31,20 @@ def handle_command(command, channel, user):
                Example: `@waterboy make 500` will make 500 watermarked images"""
     # Determine which command the user is requesting to use
     if command.startswith('make'):
+        print('Command make issued')
         ex = r'\d+'
         match = re.search(ex, command)
         amount = match.group(0)
         if int(amount) <= 700:
+            print('Correct value used')
             image_files = get_image_files(LOCATION)
             img_file = pick_image_from(image_files)
             if img_file[0] is not None:
+                print('Image file exists in directory')
                 out_directory = img_file[1] + 'watermarked_' + img_file[0].split('.')[0]
                 response = "Alright, I'm on it. Making " + amount + " copies of " + img_file[0] + " image file..."
                 try:
+                    print('Begin making stuff')
                     os.mkdir(out_directory)
                     slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
                     multi_watermark(img_file,int(amount))
