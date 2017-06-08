@@ -25,7 +25,10 @@ def pick_image_from(img_files,choice=1):
     '''
     Prompts user to pick an image file to be used and returns that file
     '''
-    return img_files[0][choice-1],img_files[1]
+    try:
+        return img_files[0][choice-1],img_files[1]
+    except IndexError:
+        return None, None
 
 
 def get_image_files(location):

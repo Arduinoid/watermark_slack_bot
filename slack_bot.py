@@ -29,9 +29,10 @@ def handle_command(command, channel):
                """* command along with a number, delimited by a space.
                 I can then go ahead and get some stuff done for ya :wink:\n
                Example: `@waterboy make 500` will make 500 watermarked images"""
+    # Determine which command the user is requesting to use
     if command.startswith('make'):
         ex = r'\d+'
-        match = re.search(ex,command)
+        match = re.search(ex, command)
         amount = match.group(0)
         if int(amount) <= 700:
             img_file = pick_image_from(get_image_files(LOCATION))
