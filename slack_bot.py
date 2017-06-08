@@ -31,21 +31,31 @@ def handle_command(command, channel):
                Example: `@waterboy make 500` will make 500 watermarked images"""
     # Determine which command the user is requesting to use
     if command.startswith('make'):
+        print('make command issued')
         ex = r'\d+'
         match = re.search(ex, command)
         amount = match.group(0)
         if int(amount) <= 700:
-            img_file = pick_image_from(get_image_files(LOCATION))
-            out_directory = img_file[1] + 'watermarked_' + img_file[0].split('.')[0]
-            response = "Alright, I'm on it. Making " + amount + " copies of " + img_file[0] + " image file..."
-            try:
-                os.mkdir(out_directory)
+            print('correct number passed')
+            image_files = get_image_files(LOCATION)
+            img_file = pick_image_from(image_files)
+            print(img_file[0] == None)
+            if img_file[0] is not None:
+                print('image file not None')
+                out_directory = img_file[1] + 'watermarked_' + img_file[0].split('.')[0]
+                response = "Alright, I'm on it. Making " + amount + " copies of " + img_file[0] + " image file..."
+                try:
+                    print('trying to make stuff')
+                    os.mkdir(out_directory)
+                    slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
+                    multi_watermark(img_file,int(amount))
+                    response = "OK, you're all set @channel"
+                except:
+                    response = "Oops, looks like there's already a folder here with these pictures\nTry removing the old folder first and run the command again. :ghost:"
                 slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
-                multi_watermark(img_file,int(amount))
-                response = "OK, you're all set @channel"
-            except:
-                response = "Oops, looks like there's already a folder here with these pictures\nTry removing the old folder first and run the command again. :ghost:"
-            slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
+            else:
+                response = "I'm not seeing an image in the directory, perhaps you didn't put one there?"
+                slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)
         else:
             response = "I can understand you want a lot of images, but lets try to keep it to less than 700, OK :grimacing:"
             slack_client.api_call("chat.postMessage", channel=channel,text=response, as_user=True)

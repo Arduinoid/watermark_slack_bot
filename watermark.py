@@ -27,7 +27,7 @@ def pick_image_from(img_files,choice=1):
     '''
     try:
         return img_files[0][choice-1],img_files[1]
-    except IndexError:
+    except:
         return None, None
 
 
