@@ -4,7 +4,7 @@
 This application is designed to be an interface for the picture replication and watermarking script. It allows users to have a way to generate multiple watermarked images without having to request that the admin do this. 
 
 ---
-### **How we used to do it** ###
+### **How we use to do it** ###
 
 Prior to this application, a script was used with a basic command line prompt that would ask: 
 
