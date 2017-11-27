@@ -33,7 +33,7 @@ def handle_command(command, channel, user):
     """
     # TODO: This whole function is bloated and needs to be refactored into something more readable and extensable 
     response = "Hey there! Use the *" \
-               + COMMANDS.keys()[0] + \
+               + list(COMMANDS)[0] + \
                """* command along with a number, delimited by a space.
                 I can then go ahead and get some stuff done for ya :wink:\n
                Example: `@waterboy make 500` will make 500 watermarked images"""

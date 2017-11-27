@@ -1,6 +1,9 @@
 function Deploy-SlackBot ([switch]$Start, [switch]$NoCopy) {
     $source = '\\JON-T3600\C$\Deployment\watermark_slack_bot'
     $destination = '\\NAS-R510\C$\Users\Jon\Documents\watermark_slack_bot'
+    if (Test-Path $destination) {
+        $destination = '\\NAS-R510\C$\Users\Jon\Documents'
+    }
     $server = 'NAS-R510'
     if ((Test-Path $source) -and -not $NoCopy) {
         Write-Host "Beginning to copy files to server..." -ForegroundColor Cyan
