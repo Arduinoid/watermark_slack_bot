@@ -11,7 +11,7 @@ from watermark import *
 
 SLACK_TOKEN = os.getenv('SLACK_BOT_TOKEN')
 BOT_ID = str(os.getenv('BOT_ID'))
-BOT_PID = os.getpid()
+BOT_PID = str(os.getpid())
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 FILE_NAME = 'pid.txt'
 PID_FILE = "{}\\{}".format(SCRIPT_PATH,FILE_NAME)
