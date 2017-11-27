@@ -1,5 +1,5 @@
 function Deploy-SlackBot ([switch]$Start, [switch]$NoCopy) {
-    $source = '\\JON-T3600\C$\Deployment\Slack_Bot'
+    $source = '\\JON-T3600\C$\Deployment\watermark_slack_bot'
     $destination = '\\NAS-R510\C$\Users\Jon\Documents\Slack'
     $server = 'NAS-R510'
     if ((Test-Path $source) -and -not $NoCopy) {
