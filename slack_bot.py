@@ -11,9 +11,16 @@ from watermark import *
 
 SLACK_TOKEN = os.getenv('SLACK_BOT_TOKEN')
 BOT_ID = str(os.getenv('BOT_ID'))
+BOT_PID = os.getpid()
+SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
+FILE_NAME = 'pid.txt'
+PID_FILE = "{}\\{}".format(SCRIPT_PATH,FILE_NAME)
 
 AT_BOT = "<@" + BOT_ID + ">"
 COMMANDS = {'make': 0}
+
+with open(PID_FILE, 'w') as pid:
+    pid.write(BOT_PID)
 
 slack_client = SlackClient(SLACK_TOKEN)
 
@@ -24,6 +31,7 @@ def handle_command(command, channel, user):
         are valid commands. If so, then acts on the commands. If not,
         returns back what it needs for clarification.
     """
+    # TODO: This whole function is bloated and needs to be refactored into something more readable and extensable 
     response = "Hey there! Use the *" \
                + COMMANDS.keys()[0] + \
                """* command along with a number, delimited by a space.
@@ -67,11 +75,12 @@ def parse_slack_output(slack_rtm_output):
     """
         The Slack Real Time Messaging API is an events firehose.
         this parsing function returns None unless a message is
-        directed at the Bot, BASEd on its ID.
+        directed at the Bot, based on its ID.
     """
     output_list = slack_rtm_output
     if output_list and len(output_list) > 0:
         for output in output_list:
+            # TODO: This is really hard to read and should be changed if possible 
             if output and 'text' in output and AT_BOT in output['text']:
                 # return text after the @ mention, whitespace removed
                 return output['text'].split(AT_BOT)[1].strip().lower(), output['channel'], output['user']

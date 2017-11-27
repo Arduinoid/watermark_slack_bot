@@ -21,7 +21,7 @@ function Deploy-SlackBot ([switch]$Start, [switch]$NoCopy) {
                 Start-ScheduledTask -TaskPath \ -TaskName 'Slack Bot'
             }
         }
-        $process = (Get-Process -ComputerName $server -Name pythonw).id
+        $process = Get-Content "$destination\pid.txt"
         Write-Host "Slack Bot should now be running on the following process: $process" -ForegroundColor Green
         
     }
