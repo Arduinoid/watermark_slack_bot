@@ -78,7 +78,7 @@ def multi_watermark(img_file, amount, txt='SaveMyServer'):
     step = (base_image.size[0] - text_width) / amount
     position = 0
     # Loop to make multiple images
-    for i in xrange(amount):
+    for i in range(amount):
         position += step
         txt = Image.new('RGBA', base_image.size, (255, 255, 255, 0))
         d = ImageDraw.Draw(txt)
@@ -91,4 +91,6 @@ if __name__ == '__main__':
     AMOUNT = int(input("How many copies would you like?\nEnter number: "))
     IMG_FILES = get_image_files(LOCATION)
     BASE_IMG = pick_image_from(IMG_FILES)
+    out_directory = BASE_IMG[1] + 'watermarked_' + BASE_IMG[0].split('.')[0]
+    os.mkdir(out_directory)
     multi_watermark(BASE_IMG, AMOUNT)
